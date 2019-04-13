@@ -61,6 +61,8 @@ class HashTable(object):
 		raise KeyError
 	
 	def set(self, key, value):
+
+		""""""
 		entry, index = self._get_entry(key)
 		self.container[index] = TableEntry(hash(key), key, value)
 		if entry is self.NoValue:
@@ -72,6 +74,9 @@ class HashTable(object):
 		self.set(key, value)
 	
 	def get(self, key):
+		"""A search function to find a key
+		key: the key to be searched
+		"""
 		entry, _ = self._get_entry(key)
 		if entry is self.NoValue:
 			raise KeyError('Key {0} not in hash table'.format(key))
@@ -82,6 +87,11 @@ class HashTable(object):
 		return self.get(key)
 	
 	def delete(self, key):
+		"""Deletes a key in the hash table
+		self: teh object itself
+		key: the key to be deleted
+		"""
+
 		entry, index = self._get_entry(key)
 		if entry is self.NoValue:
 			raise KeyError('Key {0} not in hash table'.format(key))
