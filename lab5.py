@@ -99,7 +99,7 @@ class OpenAddressHashTable:
         if location is None:
             list = LinkedList()
             self.array[hash_value] = list
-            list.insert(Node(key))
+            list.set(Node(key))
             self.population += 1
         else:
             list = location
@@ -213,7 +213,7 @@ class OpenAddressHashTable:
             .. math::
                 h = fractional \gg (w - p)
 
-            Note that constants :math:`S`, :math:`w`, and :math:`p` are already defined above, as **instance variables _S, _WORD_SIZE, and _P**, respectively. Since Python 3.* uses integers of variable length, :math:`w` is at the programmer's discretion, and _S is initialized accordingly. Even if this implementation of the multiplication method takes advantage of Python's flexibility (returning correct results for even very large keys), the method string_to_hash_ challenges you nonetheless to deal with large numerical keys by using only a constant number of machine words.
+            Note that constants :math:`S`, :math:`w`, and :math:`p` are already defined above, as **instance variables _S, _WORD_SIZE, and _P**, respectively. Since Python 3.* uses integers of variable length, :math:`w` is at the programmer's discretion, and _S is initialized accordingly. Even if this implementation of the multiplication method takes advantage of Python's flexibility (returning correct results for even very large keys), the method string_to_hash_ challenges you nonetheless to deal with large numerical keys by using only a constant number of machine numbers.
 
         :param numkey: the key to be stored
         :type numkey: int
@@ -277,11 +277,11 @@ class OpenAddressHashTable:
         """
         .. _string_to_hash:
 
-        (EXTRA-CREDIT: 10 pts - RESTORE THE CORRESPONDING UNIT TESTS AT THE END OF THE MODULE) Interpret a string as a natural number, with radix 128, and then hash it with the multiplication method.  The following procedure follows CLRS3, 11.3,  p. 263 ("Interpreting keys as natural numbers") and 11.3.1 ("The multiplication method") , but ensures that the  computation, and the resulting key do not use more than a constant number of machine words of length :math:`w` (see Exercise 11.3.2). Hint: Use the **mod** operation wisely.
+        (EXTRA-CREDIT: 10 pts - RESTORE THE CORRESPONDING UNIT TESTS AT THE END OF THE MODULE) Interpret a string as a natural number, with radix 128, and then hash it with the multiplication method.  The following procedure follows CLRS3, 11.3,  p. 263 ("Interpreting keys as natural numbers") and 11.3.1 ("The multiplication method") , but ensures that the  computation, and the resulting key do not use more than a constant number of machine numbers of length :math:`w` (see Exercise 11.3.2). Hint: Use the **mod** operation wisely.
 
         .. todo:: Implement the following steps:
 
-            1. From string `s`, compute a radix-128 numerical key, without using more than a constant number of machine words
+            1. From string `s`, compute a radix-128 numerical key, without using more than a constant number of machine numbers
             2. then pass the resulting key to the hash_multiply_ procedure
 
             Instance variable **_WORD_SIZE** stores the value of :math:`w` for the table.
@@ -392,49 +392,49 @@ class Hash_UnitTest(unittest.TestCase):
 
     def test_insert_word_1(self):
         """ Insert a single key """
-        self.ht.insert('ex-parrot')
+        self.ht.set('ex-parrot')
         # print(self.ht)
         self.assertEqual(self.ht.list_at('ex-parrot').length, 1)
 
     def test_insert_words_2(self):
         """ Colliding keys """
-        self.ht.insert('squire')
-        self.ht.insert('shuffled')
+        self.ht.set('squire')
+        self.ht.set('shuffled')
         # print(self.ht)
         self.assertEqual(self.ht.list_at('python'), self.ht.list_at('nuzzled'))
 
     def test_insert_words_3(self):
         """ Insert a set of keys """
         for w in self.words:
-            self.ht.insert(w)
+            self.ht.set(w)
         # print(self.ht)
         self.assertEqual(self.ht.population, 75)
 
     def test_search_word_1(self):
         """ Search for an existing key """
         for w in self.words:
-            self.ht.insert(w)
+            self.ht.set(w)
         # print(self.ht)
         self.assertEqual(self.ht.search('British-Railways'), 'British-Railways')
 
     def test_search_word_2(self):
         """ Unsuccessful search for a key """
         for w in self.words:
-            self.ht.insert(w)
+            self.ht.set(w)
         # print(self.ht)
         self.assertEqual(self.ht.search('Moby Dick'), None)
 
     def test_delete_word_1(self):
         """ Delete a key """
         for w in self.words:
-            self.ht.insert(w)
+            self.ht.set(w)
         self.ht.delete('discovered')
         self.assertEqual(self.ht.search('discovered'), None)
 
     def test_delete_word_2(self):
         """ Delete a key that does not exist """
         for w in self.words:
-            self.ht.insert(w)
+            self.ht.set(w)
         self.assertEqual(self.ht.delete('Moby Dick'), None)
 
     def test_multiplication_create_new_hash(self):
@@ -495,15 +495,15 @@ class Hash_UnitTest(unittest.TestCase):
     def test_multiplication_insert_word_1(self):
         """Insert a key (multiplication method)"""
         ht = HashTable(HashTable.HashingMethod.MULTIPLICATION)
-        ht.insert('ex-parrot')
+        ht.set('ex-parrot')
         # print(ht)
         self.assertEqual(ht.list_at('ex-parrot').length, 1)
 
     def test_multiplication_insert_words_2(self):
         """ Colliding keys (multiplication method) """
         ht = HashTable(HashTable.HashingMethod.MULTIPLICATION)
-        ht.insert('stiff')
-        ht.insert('python')
+        ht.set('stiff')
+        ht.set('python')
         # print(ht)
         self.assertEqual(ht.list_at('register'), ht.list_at('Praline'))
 
@@ -511,7 +511,7 @@ class Hash_UnitTest(unittest.TestCase):
         """ Insert a set of keys (multiplication)"""
         ht = HashTable(HashTable.HashingMethod.MULTIPLICATION)
         for w in self.words:
-            ht.insert(w)
+            ht.set(w)
         # print(ht)
         self.assertEqual(ht.population, 75)
 
@@ -519,7 +519,7 @@ class Hash_UnitTest(unittest.TestCase):
         """ Search a key (multiplication method)"""
         ht = HashTable(HashTable.HashingMethod.MULTIPLICATION)
         for w in self.words:
-            ht.insert(w)
+            ht.set(w)
         # print(ht)
         self.assertEqual(ht.search('British-Railways'), 'British-Railways')
 
